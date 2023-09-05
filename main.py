@@ -12,23 +12,24 @@ import numpy as np
 
 INPUT_IMAGE =  'a01 - Original.bmp'
 COLORED_IMG = False
-JANELA = 1
+JANELA = 3
 
 ####################################################
 
 def filtro_media_ingenuo(img):
-    img_out = img.copy()
     heigth = img.shape[0]
     width = img.shape[1]
+    img_out = img.copy()
     if not COLORED_IMG:
-        for y in range(img.shape[0]):
-            for x in range(img.shape[1]):
+        for y in range(0 + JANELA, heigth - JANELA):
+            for x in range(0 + JANELA, width - JANELA):
                 soma = 0
-                for h in range(y - JANELA, y + JANELA):
-                    for w in range(x - JANELA, x + JANELA):
-                        soma += img[y][x]
+                for h in range(y - JANELA, y + JANELA + 1):
+                    for w in range(x - JANELA, x + JANELA + 1):
+                        soma += img[h][w]
                 total_janela = (((2*JANELA) + 1)**2)
-                img_out[y][x] = soma/float(total_janela)
+                valor_saida = soma/float(total_janela)
+                img_out[y][x] = valor_saida
     return img_out
 
 def main():
@@ -45,7 +46,7 @@ def main():
     img = img.reshape((img.shape[0], img.shape[1], 1))
     img = img.astype(np.float32) / 255
     img_out = filtro_media_ingenuo(img)
-    cv2.imwrite('01 - binarizada.png', img_out*255)
+    cv2.imwrite('01 - imagem_filtrada.png', img_out*255)
 
 
 # Press the green button in the gutter to run the script.
