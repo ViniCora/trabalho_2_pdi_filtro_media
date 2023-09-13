@@ -14,16 +14,15 @@ def filtro_media_separavel(img, heigth, width):
     img_out = img.copy()
     for y in range(0, heigth):
         primeiro = True
-        guarda_valor = 0
-        for x in range(0 + JANELA, width - JANELA):
-            soma = 0
+        soma = 0
+        for x in range(JANELA, width - JANELA):
             if primeiro:
-                guarda_valor = img[y][x - JANELA]
                 for w in range(x - JANELA, x + JANELA + 1):
                     soma += img[y][w]
+                primeiro = False
             else:
-                soma = soma - guarda_valor + img[y][x + JANELA + 1]
-            img_out[y][x] = soma / ((JANELA + 1) * 2)
+                soma = soma - img[y][x - JANELA-1] + img[y][x + JANELA]
+            img_out[y][x] = soma / (JANELA*2+1)
 
     img_out2 = img_out.copy()
     for x in range(0 + JANELA, width - JANELA):
@@ -31,7 +30,7 @@ def filtro_media_separavel(img, heigth, width):
             soma = 0
             for h in range(y - JANELA, y + JANELA + 1):
                 soma += img_out[h][x]
-            img_out2[y][x] = soma / ((JANELA + 1) * 2)
+            img_out2[y][x] = soma / ((JANELA*2+1))
 
     return img_out2
 
